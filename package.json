@@ -1,6 +1,6 @@
 {
   "name": "saucelabs-runner",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "author": "yiminghe <yiminghe@gmail.com>",
   "engines": {
     "node": "~0.10"
@@ -9,5 +9,11 @@
   "repository": {
     "type": "git",
     "url": "http://github.com/yiminghe/saucelabs-runner.git"
+  },
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "q": "^1.0.1",
+    "request": "^2.40.0",
+    "sauce-tunnel": "^2.1.0"
   }
 }
