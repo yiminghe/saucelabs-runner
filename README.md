@@ -1,9 +1,9 @@
-saucelabs-runner
-================
+# saucelabs-runner
 
 run test cases in saucelabs.
 
-modified from [https://github.com/axemclion/grunt-saucelabs](https://github.com/axemclion/grunt-saucelabs)
+
+credit to [https://github.com/axemclion/grunt-saucelabs](https://github.com/axemclion/grunt-saucelabs)
 
 
 ## guide
