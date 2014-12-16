@@ -52,3 +52,8 @@ npm start
 npm run saucelabs
 ```
 
+### refer
+
+https://saucelabs.com/platforms
+
+https://docs.saucelabs.com/ci-integrations/travis-ci/
