@@ -3,8 +3,6 @@
 run test cases in saucelabs.
 
 
-credit to [https://github.com/axemclion/grunt-saucelabs](https://github.com/axemclion/grunt-saucelabs)
-
 
 ## guide
 
@@ -14,11 +12,17 @@ set username and access key from saucelabs to process.env.SAUCE_USERNAME and pro
 ### example
 
 ```javascript
-var saucelabsRunner = require('saucelabs-runner');
-saucelabsRunner([{
-    testname:'', // name
-    urls: 'http://localhost/test.html' // test runner
-}],
-// test framework, support mocha or jasmine
-'mocha');
+run({
+  browsers: [
+    {
+      browserName: 'chrome',
+      url:'http://x.com/runner.html' //defaults to 'http://localhost:' + process.env.npm_package_config_port + '/tests/runner.html'
+    },
+    {
+      browserName: 'firefox'
+    }
+  ]
+}).fail(function () {
+    console.log('connect to saucelabs error!')
+  });
 ```
