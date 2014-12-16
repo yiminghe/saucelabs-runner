@@ -1,3 +1,8 @@
+/**
+ * wrap wd and sauce-tunnel to test mocha runner across browsers
+ * @author yiminghe@gmail.com
+ */
+
 var Promise = require('modulex-promise');
 var wd = require('wd');
 var debug = require('debug')('saucelabs-runner');
@@ -49,13 +54,13 @@ function reportProgress(notification) {
   }
 }
 
-function createTunnel() {
+function createTunnel(config) {
   return new Promise(function (resolve, reject) {
     reportProgress({
       type: 'tunnelOpen'
     });
 
-    var tunnel = new SauceTunnel(username, key, identifier, true, 5);
+    var tunnel = new SauceTunnel(config.username || username, config.key || key, config.identifier || identifier, true, 5);
 
     process.on('exit', function () {
       tunnel.stop();
@@ -92,20 +97,20 @@ function createTunnel() {
 }
 
 
-function runTest(config) {
+function runTest(config, totalConfig) {
   debug('run single test: ');
   config = utils.merge({
     browserName: 'chrome',
-    testname: testname,
+    testname: totalConfig.testname || testname,
     url: DEFAULT_RUNNER,
-    build: build,
-    "tunnel-identifier": identifier
+    build: totalConfig.build || build,
+    "tunnel-identifier": totalConfig.identifier || identifier
   }, config);
   var testConfig = JSON.stringify(config);
   debug(testConfig);
   var browser = wd.promiseChainRemote({
-    user: username,
-    pwd: key,
+    user: totalConfig.username || username,
+    pwd: totalConfig.key || key,
     protocol: 'http:',
     hostname: 'ondemand.saucelabs.com',
     port: '80',
@@ -137,10 +142,10 @@ function runTest(config) {
 
 function run(config) {
   return new Promise(function (resolve, reject) {
-    createTunnel().then(function (tunnel) {
+    createTunnel(config).then(function () {
       var browsers = config.browsers;
       var runs = browsers.map(function (b) {
-        return runTest(b)
+        return runTest(b, config)
       });
       Promise.all(runs).fin(function () {
         console.log('all tests over');
