@@ -129,12 +129,13 @@ function runTest(config, totalConfig) {
         debug('browser.quit');
         browser.quit();
       }).done(function () {
-        debug(testConfig);
-        debug('ok');
+        console.log(testConfig);
+        console.log('ok');
         resolve();
-      }, function () {
-        debug(testConfig);
-        debug('fail');
+      }, function (e) {
+        console.log(testConfig);
+        console.logg('fail');
+        console.log(e);
         resolve();
       });
   });
