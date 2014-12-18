@@ -16,6 +16,7 @@ var testname = require(path.join(process.cwd(), 'package.json')).name;
 var identifier = process.env.TRAVIS_JOB_ID || Math.floor((new Date()).getTime() / 1000 - 1230768000).toString();
 var build = process.env.TRAVIS_JOB_ID || ('dev:' + (new Date()));
 var DEFAULT_RUNNER = 'http://localhost:' + process.env.npm_package_config_port + '/tests/runner.html';
+var child_process = require('child_process');
 
 function reportProgress(notification) {
   switch (notification.type) {
@@ -106,11 +107,14 @@ function runTest(config, totalConfig) {
     build: totalConfig.build || build,
     "tunnel-identifier": totalConfig.identifier || identifier
   }, config);
+  config.build += '_' + encodeURIComponent(config.browserName) + '_' + (config.version || '');
   var testConfig = JSON.stringify(config);
   debug(testConfig);
+  var user = totalConfig.username || username;
+  var key = totalConfig.key || key;
   var browser = wd.promiseChainRemote({
-    user: totalConfig.username || username,
-    pwd: totalConfig.key || key,
+    user: user,
+    pwd: key,
     protocol: 'http:',
     hostname: 'ondemand.saucelabs.com',
     port: '80',
@@ -123,6 +127,12 @@ function runTest(config, totalConfig) {
       .then(function (failtures) {
         console.log(testConfig);
         console.log('failtures: ' + failtures);
+
+        return new Promise(function (resolve) {
+          child_process.exec('curl -X PUT -s -d \'{"passed": ' + (failtures ? 'false' : 'true') + '}\' -u '+user+':' + key + ' https://saucelabs.com/rest/v1/' + user + '/jobs/' + config.build, function () {
+            resolve();
+          });
+        });
       })
       .finally(function () {
         debug(testConfig);
