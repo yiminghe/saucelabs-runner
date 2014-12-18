@@ -60,7 +60,7 @@ function createTunnel(config) {
       type: 'tunnelOpen'
     });
 
-    var tunnel = new SauceTunnel(config.username || username, config.key || key, config.identifier || identifier, true, 5);
+    var tunnel = new SauceTunnel(config.username || username, config.key || key, config.identifier || identifier, true, 500);
 
     process.on('exit', function () {
       tunnel.stop();
@@ -118,7 +118,7 @@ function runTest(config, totalConfig) {
   });
   return new Promise(function (resolve) {
     browser.init(config).get(config.url)
-      .waitFor(wd.asserters.jsCondition("window.mochaRunner && !window.mochaRunner.stats.pending"), 5e3, 50)
+      .waitFor(wd.asserters.jsCondition("window.mochaRunner && !window.mochaRunner.stats.pending"), 5e5, 50)
       .eval('window.mochaRunner.stats.failures')
       .then(function (failtures) {
         console.log(testConfig);
