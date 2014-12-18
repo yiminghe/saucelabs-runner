@@ -134,7 +134,7 @@ function runTest(config, totalConfig) {
         resolve();
       }, function (e) {
         console.log(testConfig);
-        console.logg('fail');
+        console.log('fail');
         console.log(e);
         resolve();
       });
