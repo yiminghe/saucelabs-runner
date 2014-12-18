@@ -107,7 +107,7 @@ function runTest(config, totalConfig) {
     build: totalConfig.build || build,
     "tunnel-identifier": totalConfig.identifier || identifier
   }, config);
-  config.build += '_' + encodeURIComponent(config.browserName) + '_' + (config.version || '');
+  // config.build += '_' + encodeURIComponent(config.browserName) + '_' + (config.version || '');
   var testConfig = JSON.stringify(config);
   debug(testConfig);
   var user = totalConfig.username || username;
@@ -127,9 +127,9 @@ function runTest(config, totalConfig) {
       .then(function (failtures) {
         console.log(testConfig);
         console.log('failtures: ' + failtures);
-
+        var sessionId = browser.getSessionId();
         return new Promise(function (resolve) {
-          child_process.exec('curl -X PUT -s -d \'{"passed": ' + (failtures ? 'false' : 'true') + '}\' -u '+user+':' + key + ' https://saucelabs.com/rest/v1/' + user + '/jobs/' + config.build, function () {
+          child_process.exec('curl -X PUT -s -d \'{"passed": ' + (failtures ? 'false' : 'true') + '}\' -u ' + user + ':' + key + ' https://saucelabs.com/rest/v1/' + user + '/jobs/' + sessionId, function () {
             resolve();
           });
         });
