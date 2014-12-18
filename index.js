@@ -111,10 +111,10 @@ function runTest(config, totalConfig) {
   var testConfig = JSON.stringify(config);
   debug(testConfig);
   var user = totalConfig.username || username;
-  var key = totalConfig.key || key;
+  var myKey = totalConfig.key || key;
   var browser = wd.promiseChainRemote({
     user: user,
-    pwd: key,
+    pwd: myKey,
     protocol: 'http:',
     hostname: 'ondemand.saucelabs.com',
     port: '80',
@@ -129,7 +129,16 @@ function runTest(config, totalConfig) {
         console.log('failtures: ' + failtures);
         var sessionId = browser.getSessionId();
         return new Promise(function (resolve) {
-          child_process.exec('curl -X PUT -s -d \'{"passed": ' + (failtures ? 'false' : 'true') + '}\' -u ' + user + ':' + key + ' https://saucelabs.com/rest/v1/' + user + '/jobs/' + sessionId, function () {
+          var url = 'curl -X PUT -s -d \'{"passed": ' + (failtures ? 'false' : 'true') + '}\' -u ' + user + ':' + myKey + ' https://saucelabs.com/rest/v1/' + user + '/jobs/' + sessionId;
+          //debug('url: ' + url);
+          child_process.exec(url, function (error, stdout, stderr) {
+            debug(testConfig);
+            //debug('url: ' + url);
+            debug('exec stdout: ' + stdout);
+            debug('exec stderr: ' + stderr);
+            if (error !== null) {
+              debug('exec error: ' + error);
+            }
             resolve();
           });
         });
