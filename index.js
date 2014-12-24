@@ -103,7 +103,7 @@ function runTest(config, totalConfig) {
   config = utils.merge({
     browserName: 'chrome',
     testname: totalConfig.testname || testname,
-    url: DEFAULT_RUNNER,
+    url: totalConfig.url || DEFAULT_RUNNER,
     build: totalConfig.build || build,
     "tunnel-identifier": totalConfig.identifier || identifier
   }, config);
@@ -122,7 +122,7 @@ function runTest(config, totalConfig) {
   });
   return new Promise(function (resolve) {
     browser.init(config).get(config.url)
-      .waitFor(wd.asserters.jsCondition("window.mochaRunner && window.mochaRunner.stats.end"), 5e5, 50)
+      .waitFor(wd.asserters.jsCondition("window.mochaRunner && window.mochaRunner.stats.end"), totalConfig.timeout || 5e5, 50)
       .eval('window.mochaRunner.stats.failures')
       .then(function (failtures) {
         console.log(testConfig);
