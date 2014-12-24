@@ -1,6 +1,6 @@
 {
   "name": "saucelabs-runner",
-  "version": "2.0.12",
+  "version": "2.1.0",
   "author": "yiminghe <yiminghe@gmail.com>",
   "description": "wrap wd and sauce-tunnel to test mocha runner across browsers",
   "keywords": [

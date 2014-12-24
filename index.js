@@ -122,7 +122,7 @@ function runTest(config, totalConfig) {
   });
   return new Promise(function (resolve) {
     browser.init(config).get(config.url)
-      .waitFor(wd.asserters.jsCondition("window.mochaRunner && window.mochaRunner.stats.end"), totalConfig.timeout || 5e5, 50)
+      .waitFor(wd.asserters.jsCondition("window.mochaRunner && window.mochaRunner.stats.end"), totalConfig.timeout || 5e6, 1000)
       .eval('window.mochaRunner.stats.failures')
       .then(function (failtures) {
         console.log(testConfig);
