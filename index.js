@@ -17,6 +17,7 @@ var identifier = process.env.TRAVIS_JOB_ID || Math.floor((new Date()).getTime() 
 var build = process.env.TRAVIS_JOB_ID || ('dev:' + (new Date()));
 var DEFAULT_RUNNER = 'http://localhost:' + process.env.npm_package_config_port + '/tests/runner.html';
 var child_process = require('child_process');
+var async = require('async');
 
 function reportProgress(notification) {
   switch (notification.type) {
@@ -165,9 +166,14 @@ function run(config) {
     createTunnel(config).then(function () {
       var browsers = config.browsers;
       var runs = browsers.map(function (b) {
-        return runTest(b, config)
+        return function (done) {
+          runTest(b, config).then(function () {
+            done()
+          });
+        };
       });
-      Promise.all(runs).fin(function () {
+      // series test
+      async.series(runs, function () {
         console.log('all tests over');
         resolve();
       });

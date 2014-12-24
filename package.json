@@ -1,6 +1,6 @@
 {
   "name": "saucelabs-runner",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "yiminghe <yiminghe@gmail.com>",
   "description": "wrap wd and sauce-tunnel to test mocha runner across browsers",
   "keywords": [
@@ -17,6 +17,7 @@
     "url": "http://github.com/yiminghe/saucelabs-runner.git"
   },
   "dependencies": {
+    "async": "~0.9.0",
     "debug": "~2.1.0",
     "modulex-promise": "~1.1.3",
     "modulex-util": "~1.1.4",
