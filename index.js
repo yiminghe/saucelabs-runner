@@ -126,6 +126,7 @@ function runTest(config, totalConfig) {
       .waitFor(wd.asserters.jsCondition('window.mochaRunner && window.mochaRunner.stats.end || document.documentElement.getAttribute("__saucelabs_runner_failures")'), totalConfig.timeout || 5e6, 1000)
       .eval('window.mochaRunner && window.mochaRunner.stats.failures || document.documentElement.getAttribute("__saucelabs_runner_failures") || 0')
       .then(function (failtures) {
+        failtures = parseInt(failtures, 10);
         console.log(testConfig);
         console.log('failtures: ' + failtures);
         var sessionId = browser.getSessionId();
