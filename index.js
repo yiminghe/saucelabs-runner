@@ -123,8 +123,8 @@ function runTest(config, totalConfig) {
   });
   return new Promise(function (resolve) {
     browser.init(config).get(config.url)
-      .waitFor(wd.asserters.jsCondition('window.mochaRunner && window.mochaRunner.stats.end || document.getElementById("__saucelabs_runner_failures")'), totalConfig.timeout || 5e6, 1000)
-      .eval('window.mochaRunner && window.mochaRunner.stats.failures || document.getElementById("__saucelabs_runner_failures") && document.getElementById("__saucelabs_runner_failures").innerHTML || 0')
+      .waitFor(wd.asserters.jsCondition('window.mochaRunner && window.mochaRunner.stats.end || document.documentElement.getAttribute("__saucelabs_runner_failures")'), totalConfig.timeout || 5e6, 1000)
+      .eval('window.mochaRunner && window.mochaRunner.stats.failures || document.documentElement.getAttribute("__saucelabs_runner_failures") || 0')
       .then(function (failtures) {
         console.log(testConfig);
         console.log('failtures: ' + failtures);
